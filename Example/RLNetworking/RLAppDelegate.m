@@ -7,12 +7,14 @@
 //
 
 #import "RLAppDelegate.h"
+#import "RLNetworking.h"
 
 @implementation RLAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    [RLClient configureBaseHost:@"http://172.28.60.45/api/"];
+    [RLClient setLogEnable:YES];
     return YES;
 }
 
@@ -41,6 +43,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+//    [RLClient applicationWillTerminate:application];
 }
 
 @end
