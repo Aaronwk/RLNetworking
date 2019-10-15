@@ -290,8 +290,10 @@
             if(_parameter.downloadFinish) {
                 _parameter.downloadFinish(filePath);
             }
-            [RLLog rl_logResponse:response task:nil];
-            success(nil, [self rl_parseResponse:response]);
+            if(response) {
+                [RLLog rl_logResponse:response task:nil];
+                success(nil, [self rl_parseResponse:response]);
+            }
         }
     }];
     

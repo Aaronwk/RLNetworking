@@ -26,12 +26,13 @@
     }else{
         NSLog(@"日志状态关闭");
     }
-    
     [RLNetwork rl_request:^(RLParameter * _Nonnull parameter) {
+        parameter.url = @"http://sk.cri.cn/am846/1564073621.ts?wsApp=HLS&wsMonitor=0";
         parameter.requestMethod = RLGet;
         parameter.timeOut = 10;
-        parameter.path = @"getSet";
-        parameter.param = @{@"type":@"1", @"name":@"carry"};
+        
+//        parameter.path = @"getSet";
+//        parameter.param = @{@"type":@"1", @"name":@"carry"};
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable response) {
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

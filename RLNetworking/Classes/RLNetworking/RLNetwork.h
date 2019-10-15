@@ -139,7 +139,7 @@ typedef void(^RLDownloadFinish)(NSURL * filePath);
 /**
  Desc:参数钩子
  */
-typedef void (^RLRequestParameter)(RLParameter *parameter);
+typedef void (^RLRequestParameter)(RLParameter *p);
 /**
  Desc:请求成功块
  */

@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /// 配置用于直接发起请求的url
-/// @param url 请求的url.优先级高于 ’configureTheDevelopmentWithHost ‘、’configureTheDistributionWithHost‘
+/// @param host 请求的url.优先级高于 ’configureTheDevelopmentWithHost ‘、’configureTheDistributionWithHost‘
 + (void)configureBaseHost:(NSString *)host;
 
 /// 设置开发模式下的请求信息
