@@ -30,7 +30,6 @@
         parameter.url = @"http://sk.cri.cn/am846/1564073621.ts?wsApp=HLS&wsMonitor=0";
         parameter.requestMethod = RLGet;
         parameter.timeOut = 10;
-        
 //        parameter.path = @"getSet";
 //        parameter.param = @{@"type":@"1", @"name":@"carry"};
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable response) {

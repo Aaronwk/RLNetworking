@@ -184,12 +184,13 @@
     requestParameter(parameter);
     [RLLog rl_logRequest:parameter];
     AFHTTPSessionManager *manager = (AFHTTPSessionManager *)parameter.manager;
-    return [manager GET:parameter.url
-             parameters:parameter.param
-               progress:nil
-                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                    [RLLog rl_logResponse:responseObject task:task];
-                    success(task, [self rl_parseResponse:responseObject]);
+    
+   return [manager GET:parameter.url
+      parameters:parameter.param
+         headers:nil progress:nil
+         success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [RLLog rl_logResponse:responseObject task:task];
+        success(task, [self rl_parseResponse:responseObject]);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [RLLog rl_logError:error task:task];
         failure(task, error);
@@ -205,16 +206,18 @@
     requestParameter(parameter);
     [RLLog rl_logRequest:parameter];
     AFHTTPSessionManager *manager = (AFHTTPSessionManager *)parameter.manager;
-    return  [manager POST:parameter.url?:RLString(@"%@%@%@", RLConfigure.baseUrl, parameter.path, RLConfigure.suffix)
-               parameters:parameter.param
-                 progress:nil
-                  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                      [RLLog rl_logResponse:responseObject task:task];
-                      success(task, [self rl_parseResponse:responseObject]);
+    return [manager POST:parameter.url?:RLString(@"%@%@%@", RLConfigure.baseUrl, parameter.path, RLConfigure.suffix)
+       parameters:parameter.param
+          headers:nil
+         progress:nil
+          success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [RLLog rl_logResponse:responseObject task:task];
+        success(task, [self rl_parseResponse:responseObject]);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [RLLog rl_logError:error task:task];
         failure(task, error);
     }];
+    
 }
 
 @end
@@ -227,35 +230,34 @@
     requestParameter(parameter);
     [RLLog rl_logRequest:parameter];
     AFHTTPSessionManager *manager = (AFHTTPSessionManager *)parameter.manager;
-    return [manager POST:parameter.url
-              parameters:parameter.param constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-                  if(parameter.data){
-                      for (int i = 0; i < parameter.data.count; i++) {
-                          NSString *imageFileName = @"";
-                          if (parameter.fileName == nil ||
-                              ![parameter.fileName isKindOfClass:[NSString class]] ||
-                              parameter.fileName.length == 0) {
-                              NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-                              formatter.dateFormat = @"yyyyMMddHHmmss";
-                              NSString *str = [formatter stringFromDate:[NSDate date] ];
-                              imageFileName = RLString(@"%@%@%d.%@", parameter.fileName, str, i, parameter.fileSuffix);
-                          }
-                          [formData appendPartWithFileData:parameter.data[i] name:parameter.fileKey fileName:imageFileName mimeType:parameter.fileType];
-                      }
-                  }
-              } progress:^(NSProgress * _Nonnull uploadProgress) {
-                  [RLLog rl_logUpLoadProgress:uploadProgress];
-                  if(parameter.uploadProgress){
-                      parameter.uploadProgress(uploadProgress.completedUnitCount, uploadProgress.totalUnitCount);
-                  }
-              } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                  [RLLog rl_logResponse:responseObject task:task];
-                  success(task, [self rl_parseResponse:responseObject]);
-              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                  [RLLog rl_logError:error task:task];
-                  failure(task, error);
-              }];
     
+    return [manager POST:parameter.url parameters:parameter.param headers:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        if(parameter.data){
+            for (int i = 0; i < parameter.data.count; i++) {
+                NSString *imageFileName = @"";
+                if (parameter.fileName == nil ||
+                    ![parameter.fileName isKindOfClass:[NSString class]] ||
+                    parameter.fileName.length == 0) {
+                    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                    formatter.dateFormat = @"yyyyMMddHHmmss";
+                    NSString *str = [formatter stringFromDate:[NSDate date] ];
+                    imageFileName = RLString(@"%@%@%d.%@", parameter.fileName, str, i, parameter.fileSuffix);
+                }
+                [formData appendPartWithFileData:parameter.data[i] name:parameter.fileKey fileName:imageFileName mimeType:parameter.fileType];
+            }
+        }
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        [RLLog rl_logUpLoadProgress:uploadProgress];
+        if(parameter.uploadProgress){
+            parameter.uploadProgress(uploadProgress.completedUnitCount, uploadProgress.totalUnitCount);
+        }
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [RLLog rl_logResponse:responseObject task:task];
+        success(task, [self rl_parseResponse:responseObject]);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [RLLog rl_logError:error task:task];
+        failure(task, error);
+    }];
 }
 
 @end
